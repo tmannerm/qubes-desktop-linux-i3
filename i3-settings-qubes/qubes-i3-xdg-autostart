@@ -27,4 +27,4 @@ xdg_autostart() {
 }
 
 xdg_autostart "${XDG_CONFIG_DIRS-/etc/xdg}"
-xdg_autostart "${XDG_CONFIG_HOME-~/.config}"
+xdg_autostart "${XDG_CONFIG_HOME-$HOME/.config}"
