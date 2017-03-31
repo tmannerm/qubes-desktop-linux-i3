@@ -58,6 +58,7 @@ BuildRequires:  xorg-x11-drv-dummy
 %endif
 BuildRequires:  yajl-devel
 
+Requires:       qubes-desktop-linux-common
 Requires:       dmenu
 Requires:       dzen2
 Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
