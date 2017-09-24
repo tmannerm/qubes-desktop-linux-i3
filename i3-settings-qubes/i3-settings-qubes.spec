@@ -19,6 +19,11 @@ Source4:    qubes-i3status
 Requires:   i3
 Requires:   xautolock
 Requires:   i3lock
+Requires:   perl-Data-Dumper 
+Requires:   perl-File-Temp 
+Requires:   perl-Getopt-Long 
+Requires:   perl-open
+
 
 %description
 %{summary}
