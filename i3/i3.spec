@@ -8,8 +8,8 @@ Release:        6%{?dist}
 Epoch:          1000
 Summary:        Improved tiling window manager
 License:        BSD
-URL:            http://i3wm.org
-Source0:        http://i3wm.org/downloads/%{name}-%{version}.tar.bz2
+URL:            https://i3wm.org
+Source0:        https://i3wm.org/downloads/%{name}-%{version}.tar.bz2
 Source1:        %{name}-logo.svg
 Patch0:         0001-Show-qubes-domain-in-configurable-colored-borders.patch
 
