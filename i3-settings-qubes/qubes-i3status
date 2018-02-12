@@ -9,7 +9,7 @@ json() {
 }
 
 status_net() {
-    local netvms=$(qvm-ls --raw-data --fields FLAGS 2>/dev/null | grep '...N....' | wc -l)
+    local netvms=$(qvm-ls --no-spinner --raw-data --fields NAME,FLAGS 2>/dev/null | grep '...N...' | cut -d '|' -f1 | xargs"
 
     IFS_BAK=$IFS
     IFS=$'\n'
