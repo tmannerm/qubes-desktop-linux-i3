@@ -75,7 +75,7 @@ status_load() {
 }
 
 status_qubes() {
-    local qubes=$(qvm-ls --raw-data --fields FLAGS 2>/dev/null | grep -v '^0' | grep '^.r......' | wc -l)
+    local qubes=$(qvm-ls --no-spinner --raw-data --fields FLAGS 2>/dev/null | grep -v '^0' | grep '^.r......' | wc -l)
     json qubes "$qubes Qubes"
 }
 
