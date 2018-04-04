@@ -3,8 +3,8 @@
 %endif
 
 Name:           i3
-Version:        4.12
-Release:        6%{?dist}
+Version:        4.15
+Release:        7%{?dist}
 Epoch:          1000
 Summary:        Improved tiling window manager
 License:        BSD
@@ -17,7 +17,6 @@ BuildRequires:  asciidoc
 BuildRequires:  bison
 BuildRequires:  cairo-devel
 BuildRequires:  flex
-BuildRequires:  libX11-devel
 BuildRequires:  libev-devel
 BuildRequires:  libX11-devel
 BuildRequires:  libxcb-devel
@@ -44,6 +43,7 @@ BuildRequires:  pcre-devel
 #BuildRequires:  perl(AnyEvent::I3)
 #BuildRequires:  perl(X11::XCB::Connection)
 #BuildRequires:  perl(Carp)
+BuildRequires:  perl-generators
 BuildRequires:  perl(Getopt::Long)
 BuildRequires:  perl(Data::Dumper::Names)
 BuildRequires:  startup-notification-devel
@@ -52,6 +52,7 @@ BuildRequires:  xcb-util-cursor-devel
 BuildRequires:  xcb-util-devel
 BuildRequires:  xcb-util-keysyms-devel
 BuildRequires:  xcb-util-wm-devel
+BuildRequires:  xcb-util-xrm-devel
 BuildRequires:  xmlto
 %ifnarch s390 s390x
 BuildRequires:  xorg-x11-drv-dummy
@@ -62,11 +63,9 @@ Requires:       qubes-desktop-linux-common
 Requires:       dmenu
 Requires:       dzen2
 Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
-# TODO - CHECK THIS - we're building in a different vm, so we can't rely on the perl version
-# 5.18.4 should be available to fc20
-#Requires:       perl(:MODULE_COMPAT_5.18.4)
-Recommends:     rxvt-unicode
-Recommends:     xorg-x11-apps
+# TODO: Unknown tag: Recommends
+#Recommends:     rxvt-unicode
+#Recommends:     xorg-x11-apps
 Requires:       xorg-x11-fonts-misc
 
 %description
@@ -93,24 +92,16 @@ Asciidoc and doxygen generated documentations for %{name}.
 # Drop /usr/bin/env lines in those which will be installed to %%_bindir.
 find . -maxdepth 1 -type f -name "i3*" -exec sed -i -e '1s;^#!/usr/bin/env perl;#!/usr/bin/perl;' {} + -print
 
-# 1. Drop dwarf-2, -g3 in CFLAGS recommended by gcc maintainer. Since upstream
-# uses -pipe and -g only, we can safely ignore these, but ldflags needs
-# override still.
-# 2. Preserve the timestamps.
-sed -i -e 's|LDFLAGS ?=|override LDFLAGS +=|g' \
-       -e 's|INSTALL=.*|INSTALL=install -p|g' \
-       common.mk
 
 %build
-%make_build CFLAGS="%{optflags}" LDFLAGS="%{?__global_ldflags}" V=1
-%make_build -C man V=1
-%make_build -C docs V=1
+%configure
+%make_build -C *-linux-gnu*
 
 doxygen pseudo-doc.doxygen
 mv pseudo-doc/html pseudo-doc/doxygen
 
 %install
-%make_install
+%make_install -C *-linux-gnu*
 
 mkdir -p %{buildroot}%{_mandir}/man1/
 install -Dpm0644 man/*.1 \
@@ -139,11 +130,45 @@ install -Dpm0644 %{SOURCE1} \
 %{_mandir}/man*/%{name}*
 %{_datadir}/pixmaps/%{name}-logo.svg
 %{_datadir}/applications/%{name}.desktop
+%exclude %{_docdir}/%{name}/
 
 %files doc
 %doc docs/*.{html,png} pseudo-doc/doxygen/
 
 %changelog
+* Mon Mar 12 2018 Christian Dersch <lupinix@mailbox.org> - 4.15-1
+- new version
+
+* Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 4.14.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Mon Sep 25 2017 Christian Dersch <lupinix@mailbox.org> - 4.14.1-1
+- new version
+
+* Tue Sep 05 2017 Christian Dersch <lupinix@mailbox.org> - 4.14-1
+- new version
+
+* Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 4.13-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
+
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 4.13-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Mon Jun 05 2017 Jitka Plesnikova <jplesnik@redhat.com> - 4.13-4
+- Perl 5.26 rebuild
+
+* Fri May 12 2017 Christian Dersch <lupinix@mailbox.org> - 4.13-3
+- fix build issue (#1450332)
+
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 4.13-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Wed Nov 09 2016 Christian Dersch <lupinix@mailbox.org> - 4.13-1
+- new version
+
+* Sun May 15 2016 Jitka Plesnikova <jplesnik@redhat.com> - 4.12-4
+- Perl 5.24 rebuild
+
 * Mon Mar 07 2016 Christian Dersch <lupinix@mailbox.org> - 4.12-3
 - Fixed mispelled dependency i3status
 
