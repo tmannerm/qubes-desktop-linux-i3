@@ -3,7 +3,6 @@ dist: trusty
 language: generic
 install: 
  - git clone https://github.com/QubesOS/qubes-builder ~/qubes-builder
- - wget https://i3wm.org/downloads/i3-$PACKAGE_VERSION.tar.bz2 -O i3/i3-$PACKAGE_VERSION.tar.bz2
 script: ~/qubes-builder/scripts/travis-build
 env:
- - DIST_DOM0=fc25 USE_QUBES_REPO_VERSION=4.0 USE_QUBES_REPO_TESTING=1 PACKAGE_VERSION=4.16
+ - DIST_DOM0=fc25 USE_QUBES_REPO_VERSION=4.0 USE_QUBES_REPO_TESTING=1
