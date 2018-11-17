@@ -1,17 +1,17 @@
-diff -ruN i3-4.15/include/atoms_rest.xmacro i3-4.15-patch/include/atoms_rest.xmacro
---- i3-4.15/include/atoms_rest.xmacro	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/include/atoms_rest.xmacro	2018-04-04 01:40:09.851000000 +0200
-@@ -17,3 +17,5 @@
- xmacro(_NET_REQUEST_FRAME_EXTENTS)
+diff -ruN i3-4.16/include/atoms_rest.xmacro i3-4.16-patch/include/atoms_rest.xmacro
+--- i3-4.16/include/atoms_rest.xmacro	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/include/atoms_rest.xmacro	2018-11-17 17:38:44.473693303 +0000
+@@ -18,3 +18,5 @@
  xmacro(_NET_FRAME_EXTENTS)
  xmacro(_MOTIF_WM_HINTS)
+ xmacro(WM_CHANGE_STATE)
 +xmacro(_QUBES_VMNAME)
 +xmacro(_QUBES_LABEL)
-diff -ruN i3-4.15/include/config_directives.h i3-4.15-patch/include/config_directives.h
---- i3-4.15/include/config_directives.h	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/include/config_directives.h	2018-04-02 17:41:21.254000000 +0200
-@@ -64,7 +64,7 @@
- CFGFUN(ipc_socket, const char *path);
+diff -ruN i3-4.16/include/config_directives.h i3-4.16-patch/include/config_directives.h
+--- i3-4.16/include/config_directives.h	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/include/config_directives.h	2018-11-17 17:39:46.606693303 +0000
+@@ -66,7 +66,7 @@
+ CFGFUN(ipc_kill_timeout, const long timeout_ms);
  CFGFUN(restart_state, const char *path);
  CFGFUN(popup_during_fullscreen, const char *value);
 -CFGFUN(color, const char *colorclass, const char *border, const char *background, const char *text, const char *indicator, const char *child_border);
@@ -19,10 +19,10 @@ diff -ruN i3-4.15/include/config_directives.h i3-4.15-patch/include/config_direc
  CFGFUN(color_single, const char *colorclass, const char *color);
  CFGFUN(floating_modifier, const char *modifiers);
  CFGFUN(default_border, const char *windowtype, const char *border, const long width);
-diff -ruN i3-4.15/include/configuration.h i3-4.15-patch/include/configuration.h
---- i3-4.15/include/configuration.h	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/include/configuration.h	2018-04-02 17:13:31.045000000 +0200
-@@ -225,7 +225,7 @@
+diff -ruN i3-4.16/include/configuration.h i3-4.16-patch/include/configuration.h
+--- i3-4.16/include/configuration.h	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/include/configuration.h	2018-11-17 17:37:27.646693303 +0000
+@@ -232,7 +232,7 @@
          struct Colortriple unfocused;
          struct Colortriple urgent;
          struct Colortriple placeholder;
@@ -31,9 +31,9 @@ diff -ruN i3-4.15/include/configuration.h i3-4.15-patch/include/configuration.h
      struct config_bar {
          struct Colortriple focused;
          struct Colortriple unfocused;
-diff -ruN i3-4.15/include/data.h i3-4.15-patch/include/data.h
---- i3-4.15/include/data.h	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/include/data.h	2018-04-02 18:28:35.315000000 +0200
+diff -ruN i3-4.16/include/data.h i3-4.16-patch/include/data.h
+--- i3-4.16/include/data.h	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/include/data.h	2018-11-17 17:37:27.646693303 +0000
 @@ -143,6 +143,23 @@
  } focus_wrapping_t;
  
@@ -71,9 +71,9 @@ diff -ruN i3-4.15/include/data.h i3-4.15-patch/include/data.h
      /** The WM_WINDOW_ROLE of this window (for example, the pidgin buddy window
       * sets "buddy list"). Useful to match specific windows in assignments or
       * for_window. */
-diff -ruN i3-4.15/include/window.h i3-4.15-patch/include/window.h
---- i3-4.15/include/window.h	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/include/window.h	2018-04-02 17:13:31.048000000 +0200
+diff -ruN i3-4.16/include/window.h i3-4.16-patch/include/window.h
+--- i3-4.16/include/window.h	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/include/window.h	2018-11-17 17:37:27.646693303 +0000
 @@ -41,6 +41,20 @@
  void window_update_name_legacy(i3Window *win, xcb_get_property_reply_t *prop, bool before_mgmt);
  
@@ -95,10 +95,10 @@ diff -ruN i3-4.15/include/window.h i3-4.15-patch/include/window.h
   * Updates the CLIENT_LEADER (logical parent window).
   *
   */
-diff -ruN i3-4.15/parser-specs/config.spec i3-4.15-patch/parser-specs/config.spec
---- i3-4.15/parser-specs/config.spec	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/parser-specs/config.spec	2018-04-02 17:13:31.050000000 +0200
-@@ -54,7 +54,7 @@
+diff -ruN i3-4.16/parser-specs/config.spec i3-4.16-patch/parser-specs/config.spec
+--- i3-4.16/parser-specs/config.spec	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/parser-specs/config.spec	2018-11-17 17:37:27.647693303 +0000
+@@ -56,7 +56,7 @@
    colorclass = 'client.background'
        -> COLOR_SINGLE
    colorclass = 'client.focused_inactive', 'client.focused', 'client.unfocused', 'client.urgent', 'client.placeholder'
@@ -107,7 +107,7 @@ diff -ruN i3-4.15/parser-specs/config.spec i3-4.15-patch/parser-specs/config.spe
  
  # We ignore comments and 'set' lines (variables).
  state IGNORE_LINE:
-@@ -297,6 +297,10 @@
+@@ -309,6 +309,10 @@
        -> call cfg_color_single($colorclass, $color)
  
  # colorclass border background text indicator
@@ -118,7 +118,7 @@ diff -ruN i3-4.15/parser-specs/config.spec i3-4.15-patch/parser-specs/config.spe
  state COLOR_BORDER:
    border = word
        -> COLOR_BACKGROUND
-@@ -313,13 +317,13 @@
+@@ -325,13 +329,13 @@
    indicator = word
        -> COLOR_CHILD_BORDER
    end
@@ -135,40 +135,38 @@ diff -ruN i3-4.15/parser-specs/config.spec i3-4.15-patch/parser-specs/config.spe
  
  # <exec|exec_always> [--no-startup-id] command
  state EXEC:
-diff -ruN i3-4.15/src/commands.c i3-4.15-patch/src/commands.c
---- i3-4.15/src/commands.c	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/src/commands.c	2018-04-02 17:13:31.053000000 +0200
-@@ -742,22 +742,16 @@
-         if (strcmp(border_style_str, "toggle") == 0) {
-             border_style++;
-             border_style %= 3;
--            if (border_style == BS_NORMAL)
--                con_border_width = 2;
--            else if (border_style == BS_NONE)
--                con_border_width = 0;
--            else if (border_style == BS_PIXEL)
--                con_border_width = 1;
-+            con_border_width = 3;
-         } else {
-             if (strcmp(border_style_str, "normal") == 0) {
-                 border_style = BS_NORMAL;
-             } else if (strcmp(border_style_str, "pixel") == 0) {
-                 border_style = BS_PIXEL;
--            } else if (strcmp(border_style_str, "1pixel") == 0) {
-+            } else if (strcmp(border_style_str, "1pixel") == 0 ||
-+                       strcmp(border_style_str, "none") == 0) {
-                 border_style = BS_PIXEL;
--                con_border_width = 1;
--            } else if (strcmp(border_style_str, "none") == 0) {
--                border_style = BS_NONE;
-+                con_border_width = 3;
-             } else {
-                 ELOG("BUG: called with border_style=%s\n", border_style_str);
-                 ysuccess(false);
-diff -ruN i3-4.15/src/config.c i3-4.15-patch/src/config.c
---- i3-4.15/src/config.c	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/src/config.c	2018-04-02 17:13:31.055000000 +0200
-@@ -200,14 +200,100 @@
+diff -ruN i3-4.16/src/commands.c i3-4.16-patch/src/commands.c
+--- i3-4.16/src/commands.c	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/src/commands.c	2018-11-17 17:40:54.884693303 +0000
+@@ -703,23 +703,7 @@
+ }
+ 
+ static int border_width_from_style(border_style_t border_style, long border_width, Con *con) {
+-    if (border_style == BS_NONE) {
+-        return 0;
+-    }
+-    if (border_width >= 0) {
+-        return logical_px(border_width);
+-    }
+-
+-    const bool is_floating = con_inside_floating(con) != NULL;
+-    /* Load the configured defaults. */
+-    if (is_floating && border_style == config.default_floating_border) {
+-        return config.default_floating_border_width;
+-    } else if (!is_floating && border_style == config.default_border) {
+-        return config.default_border_width;
+-    } else {
+-        /* Use some hardcoded values. */
+-        return logical_px(border_style == BS_NORMAL ? 2 : 1);
+-    }
++    return 3;
+ }
+ 
+ /*
+diff -ruN i3-4.16/src/config.c i3-4.16-patch/src/config.c
+--- i3-4.16/src/config.c	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/src/config.c	2018-11-17 17:37:27.654693303 +0000
+@@ -212,14 +212,100 @@
          x.child_border = draw_util_hex_to_color(cbackground);  \
      } while (0)
  
@@ -275,7 +273,7 @@ diff -ruN i3-4.15/src/config.c i3-4.15-patch/src/config.c
  
      /* the last argument (indicator color) is ignored for bar colors */
      INIT_COLOR(config.bar.focused, "#4c7899", "#285577", "#ffffff", "#000000");
-@@ -231,6 +317,12 @@
+@@ -243,6 +329,12 @@
  
      parse_configuration(override_configpath, true);
  
@@ -288,10 +286,10 @@ diff -ruN i3-4.15/src/config.c i3-4.15-patch/src/config.c
      if (reload) {
          translate_keysyms();
          grab_all_keys(conn);
-diff -ruN i3-4.15/src/config_directives.c i3-4.15-patch/src/config_directives.c
---- i3-4.15/src/config_directives.c	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/src/config_directives.c	2018-04-02 17:13:31.057000000 +0200
-@@ -367,32 +367,63 @@
+diff -ruN i3-4.16/src/config_directives.c i3-4.16-patch/src/config_directives.c
+--- i3-4.16/src/config_directives.c	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/src/config_directives.c	2018-11-17 17:37:27.654693303 +0000
+@@ -382,32 +382,63 @@
  
  CFGFUN(color_single, const char *colorclass, const char *color) {
      /* used for client.background only currently */
@@ -377,9 +375,9 @@ diff -ruN i3-4.15/src/config_directives.c i3-4.15-patch/src/config_directives.c
  
  #undef APPLY_COLORS
  }
-diff -ruN i3-4.15/src/manage.c i3-4.15-patch/src/manage.c
---- i3-4.15/src/manage.c	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/src/manage.c	2018-04-02 17:13:31.060000000 +0200
+diff -ruN i3-4.16/src/manage.c i3-4.16-patch/src/manage.c
+--- i3-4.16/src/manage.c	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/src/manage.c	2018-11-17 17:37:27.655693303 +0000
 @@ -86,7 +86,7 @@
      xcb_get_window_attributes_reply_t *attr = NULL;
  
@@ -407,10 +405,10 @@ diff -ruN i3-4.15/src/manage.c i3-4.15-patch/src/manage.c
      window_update_leader(cwindow, xcb_get_property_reply(conn, leader_cookie, NULL));
      window_update_transient_for(cwindow, xcb_get_property_reply(conn, transient_cookie, NULL));
      window_update_strut_partial(cwindow, xcb_get_property_reply(conn, strut_cookie, NULL));
-diff -ruN i3-4.15/src/resize.c i3-4.15-patch/src/resize.c
---- i3-4.15/src/resize.c	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/src/resize.c	2018-04-02 17:13:31.061000000 +0200
-@@ -148,7 +148,7 @@
+diff -ruN i3-4.16/src/resize.c i3-4.16-patch/src/resize.c
+--- i3-4.16/src/resize.c	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/src/resize.c	2018-11-17 17:37:27.655693303 +0000
+@@ -202,7 +202,7 @@
      }
  
      mask = XCB_CW_BACK_PIXEL;
@@ -419,9 +417,9 @@ diff -ruN i3-4.15/src/resize.c i3-4.15-patch/src/resize.c
  
      mask |= XCB_CW_OVERRIDE_REDIRECT;
      values[1] = 1;
-diff -ruN i3-4.15/src/restore_layout.c i3-4.15-patch/src/restore_layout.c
---- i3-4.15/src/restore_layout.c	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/src/restore_layout.c	2018-04-02 17:34:36.969000000 +0200
+diff -ruN i3-4.16/src/restore_layout.c i3-4.16-patch/src/restore_layout.c
+--- i3-4.16/src/restore_layout.c	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/src/restore_layout.c	2018-11-17 17:37:27.655693303 +0000
 @@ -129,8 +129,8 @@
  }
  
@@ -442,9 +440,9 @@ diff -ruN i3-4.15/src/restore_layout.c i3-4.15-patch/src/restore_layout.c
                  XCB_EVENT_MASK_EXPOSURE | XCB_EVENT_MASK_STRUCTURE_NOTIFY,
              });
          /* Make i3 not focus this window. */
-diff -ruN i3-4.15/src/window.c i3-4.15-patch/src/window.c
---- i3-4.15/src/window.c	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/src/window.c	2018-04-02 17:13:31.063000000 +0200
+diff -ruN i3-4.16/src/window.c i3-4.16-patch/src/window.c
+--- i3-4.16/src/window.c	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/src/window.c	2018-11-17 17:37:27.655693303 +0000
 @@ -146,6 +146,57 @@
  }
  
@@ -503,10 +501,10 @@ diff -ruN i3-4.15/src/window.c i3-4.15-patch/src/window.c
   * Updates the CLIENT_LEADER (logical parent window).
   *
   */
-diff -ruN i3-4.15/src/x.c i3-4.15-patch/src/x.c
---- i3-4.15/src/x.c	2018-03-10 18:29:14.000000000 +0100
-+++ i3-4.15-patch/src/x.c	2018-04-04 02:35:57.353000000 +0200
-@@ -409,15 +409,25 @@
+diff -ruN i3-4.16/src/x.c i3-4.16-patch/src/x.c
+--- i3-4.16/src/x.c	2018-11-04 13:47:34.000000000 +0000
++++ i3-4.16-patch/src/x.c	2018-11-17 17:42:47.950693303 +0000
+@@ -443,15 +443,25 @@
      /* 1: build deco_params and compare with cache */
      struct deco_render_params *p = scalloc(1, sizeof(struct deco_render_params));
  
@@ -536,7 +534,7 @@ diff -ruN i3-4.15/src/x.c i3-4.15-patch/src/x.c
  
      p->border_style = con_border_style(con);
  
-@@ -426,7 +436,7 @@
+@@ -460,7 +470,7 @@
      p->con_rect = (struct width_height){r->width, r->height};
      p->con_window_rect = (struct width_height){w->width, w->height};
      p->con_deco_rect = con->deco_rect;
@@ -545,7 +543,7 @@ diff -ruN i3-4.15/src/x.c i3-4.15-patch/src/x.c
      p->con_is_leaf = con_is_leaf(con);
      p->parent_layout = con->parent->layout;
  
-@@ -458,16 +468,16 @@
+@@ -492,16 +502,16 @@
      /* 2: draw the client.background, but only for the parts around the window_rect */
      if (con->window != NULL) {
          /* top area */
@@ -566,7 +564,7 @@ diff -ruN i3-4.15/src/x.c i3-4.15-patch/src/x.c
                              w->x + w->width, 0, r->width - (w->x + w->width), r->height);
      }
  
-@@ -547,7 +557,6 @@
+@@ -579,7 +589,6 @@
      /* 6: draw the title */
      int text_offset_y = (con->deco_rect.height - config.font.height) / 2;
  
@@ -574,7 +572,7 @@ diff -ruN i3-4.15/src/x.c i3-4.15-patch/src/x.c
      if (win == NULL) {
          i3String *title;
          if (con->title_format == NULL) {
-@@ -604,20 +613,25 @@
+@@ -643,6 +652,7 @@
          FREE(formatted_mark);
      }
  
@@ -582,6 +580,8 @@ diff -ruN i3-4.15/src/x.c i3-4.15-patch/src/x.c
      i3String *title = con->title_format == NULL ? win->name : con_parse_title_format(con);
      if (title == NULL) {
          goto copy_pixmaps;
+@@ -670,15 +680,19 @@
+             break;
      }
  
 +    char *title_buf;
@@ -593,9 +593,9 @@ diff -ruN i3-4.15/src/x.c i3-4.15-patch/src/x.c
 +
      draw_util_text(title, &(parent->frame_buffer),
                     p->color->text, p->color->background,
-                    con->deco_rect.x + logical_px(2),
+                    con->deco_rect.x + title_offset_x,
                     con->deco_rect.y + text_offset_y,
-                    con->deco_rect.width - mark_width - 2 * logical_px(2));
+                    deco_width - mark_width - 2 * title_padding);
 -
 -    if (con->title_format != NULL) {
 -        I3STRING_FREE(title);

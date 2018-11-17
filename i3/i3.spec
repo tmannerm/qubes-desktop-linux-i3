@@ -3,8 +3,8 @@
 %endif
 
 Name:           i3
-Version:        4.15
-Release:        7%{?dist}
+Version:        4.16
+Release:        8%{?dist}
 Epoch:          1000
 Summary:        Improved tiling window manager
 License:        BSD
@@ -13,6 +13,8 @@ Source0:        https://i3wm.org/downloads/%{name}-%{version}.tar.bz2
 Source1:        %{name}-logo.svg
 Patch0:         0001-Show-qubes-domain-in-configurable-colored-borders.patch
 
+# Reference: https://fedoraproject.org/wiki/Changes/Remove_GCC_from_BuildRoot
+BuildRequires:  gcc
 BuildRequires:  asciidoc
 BuildRequires:  bison
 BuildRequires:  cairo-devel
@@ -64,8 +66,8 @@ Requires:       dmenu
 Requires:       dzen2
 Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
 # TODO: Unknown tag: Recommends
-#Recommends:     rxvt-unicode
-#Recommends:     xorg-x11-apps
+#%{!?rhel:Recommends:     rxvt-unicode}
+#%{!?rhel:Recommends:     xorg-x11-apps}
 Requires:       xorg-x11-fonts-misc
 
 %description
@@ -136,6 +138,10 @@ install -Dpm0644 %{SOURCE1} \
 %doc docs/*.{html,png} pseudo-doc/doxygen/
 
 %changelog
+
+* Sat Nov 17 2018 anadahz <andz@torproject.org> - 4.16.1
+- new version for Qubes OS
+
 * Mon Mar 12 2018 Christian Dersch <lupinix@mailbox.org> - 4.15-1
 - new version
 
