@@ -1,7 +1,3 @@
-%if 0%{?qubes_builder}
-%define _sourcedir %(pwd)/i3
-%endif
-
 Name:           i3
 Version:        4.16
 Release:        8%{?dist}
