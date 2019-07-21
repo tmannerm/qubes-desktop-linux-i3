@@ -1,6 +1,6 @@
 Name:           i3
-Version:        4.16
-Release:        8%{?dist}
+Version:        4.16.1
+Release:        1%{?dist}
 Epoch:          1000
 Summary:        Improved tiling window manager
 License:        BSD
@@ -135,8 +135,8 @@ install -Dpm0644 %{SOURCE1} \
 
 %changelog
 
-* Sat Nov 17 2018 anadahz <andz@torproject.org> - 4.16.1
-- new version for Qubes OS
+* Sun Jul 21 2019 Daniel Moerner <dmoerner@gmail.com> - 4.16.1-1
+- Update to upstream 4.16.1 and refresh Qubes patches.
 
 * Mon Mar 12 2018 Christian Dersch <lupinix@mailbox.org> - 4.15-1
 - new version
