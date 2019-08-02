@@ -138,6 +138,9 @@ install -Dpm0644 %{SOURCE1} \
 * Sun Jul 21 2019 Daniel Moerner <dmoerner@gmail.com> - 4.16.1-1
 - Update to upstream 4.16.1 and refresh Qubes patches.
 
+* Sat Nov 17 2018 anadahz <andz@torproject.org> - 4.16.1
+- new version for Qubes OS
+
 * Mon Mar 12 2018 Christian Dersch <lupinix@mailbox.org> - 4.15-1
 - new version
 
