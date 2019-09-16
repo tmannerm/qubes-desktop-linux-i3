@@ -1,6 +1,6 @@
 Name:           i3
-Version:        4.16
-Release:        8%{?dist}
+Version:        4.17.1
+Release:        1%{?dist}
 Epoch:          1000
 Summary:        Improved tiling window manager
 License:        BSD
@@ -65,6 +65,7 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
 #%{!?rhel:Recommends:     rxvt-unicode}
 #%{!?rhel:Recommends:     xorg-x11-apps}
 Requires:       xorg-x11-fonts-misc
+Requires:	pulseaudio-utils
 
 %description
 Key features of i3 are correct implementation of XrandR, horizontal and vertical
@@ -134,6 +135,11 @@ install -Dpm0644 %{SOURCE1} \
 %doc docs/*.{html,png} pseudo-doc/doxygen/
 
 %changelog
+
+* Mon Sep 14 2019 anadahz <andz@torproject.org> - 4.17.1-1
+- Update to upstream release version 4.17.1
+- Add pulseaudio-utils requirement
+- Add Qubes patches: https://github.com/dmoerner/qubes-desktop-linux-i3/tree/4.17-qubes
 
 * Sat Nov 17 2018 anadahz <andz@torproject.org> - 4.16.1
 - new version for Qubes OS
