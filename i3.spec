@@ -5,25 +5,43 @@ Epoch:          1000
 Summary:        Improved tiling window manager
 License:        BSD
 URL:            https://i3wm.org
-Source0:        https://i3wm.org/downloads/%{name}-%{version}.tar.bz2
+Source0:        %{URL}/downloads/%{name}-%{version}.tar.bz2
 Source1:        %{name}-logo.svg
 Patch0:         0001-Show-qubes-domain-in-configurable-colored-borders.patch
 
-# Reference: https://fedoraproject.org/wiki/Changes/Remove_GCC_from_BuildRoot
 BuildRequires:  gcc
-BuildRequires:  asciidoc
-BuildRequires:  bison
-BuildRequires:  cairo-devel
-BuildRequires:  flex
-BuildRequires:  libev-devel
-BuildRequires:  libX11-devel
-BuildRequires:  libxcb-devel
-BuildRequires:  libXcursor-devel
-BuildRequires:  libxkbcommon-x11-devel
-BuildRequires:  libxkbfile-devel
-BuildRequires:  pango-devel
-BuildRequires:  pcre-devel
+BuildRequires:  autoconf
+BuildRequires:  automake
+# from configure.ac and DEPENDS (mostly versions)
+BuildRequires:  pkg-config >= 0.25
+# no pkg-config for libev
+BuildRequires:  libev-devel >= 4.0
+BuildRequires:  pkgconfig(libstartup-notification-1.0)
+BuildRequires:  pkgconfig(xcb) >= 1.1.93
+BuildRequires:  pkgconfig(xcb-xkb)
+BuildRequires:  pkgconfig(xcb-xinerama)
+BuildRequires:  pkgconfig(xcb-randr)
+BuildRequires:  pkgconfig(xcb-shape)
+BuildRequires:  pkgconfig(xcb-event)
+BuildRequires:  pkgconfig(xcb-util)
+BuildRequires:  pkgconfig(xcb-cursor)
+BuildRequires:  pkgconfig(xcb-keysyms)
+BuildRequires:  pkgconfig(xcb-icccm)
+BuildRequires:  pkgconfig(xcb-xrm)
+BuildRequires:  pkgconfig(xkbcommon) >= 0.4.0
+BuildRequires:  pkgconfig(xkbcommon-x11) >= 0.4.0
+BuildRequires:  pkgconfig(yajl) >= 2.0.1
+BuildRequires:  pkgconfig(libpcre) >= 8.10
+BuildRequires:  pkgconfig(cairo) >= 1.14.4
+BuildRequires:  pkgconfig(pangocairo) >= 1.30.0
+BuildRequires:  pkgconfig(glib-2.0)
+BuildRequires:  pkgconfig(gobject-2.0)
+# man pages
+BuildRequires:  asciidoc >= 8.3.0
+BuildRequires:  xmlto >= 0.0.23
+
 # TODO: Testsuites
+# BuildRequires:  perl(ExtUtils::MakeMaker)
 #BuildRequires:  perl(strict)
 #BuildRequires:  perl(warnings)
 #BuildRequires:  perl(Pod::Usage)
@@ -41,31 +59,27 @@ BuildRequires:  pcre-devel
 #BuildRequires:  perl(AnyEvent::I3)
 #BuildRequires:  perl(X11::XCB::Connection)
 #BuildRequires:  perl(Carp)
+
 BuildRequires:  perl-generators
-BuildRequires:  perl(Getopt::Long)
-BuildRequires:  perl(Data::Dumper::Names)
-BuildRequires:  startup-notification-devel
-BuildRequires:  xcb-proto
-BuildRequires:  xcb-util-cursor-devel
-BuildRequires:  xcb-util-devel
-BuildRequires:  xcb-util-keysyms-devel
-BuildRequires:  xcb-util-wm-devel
-BuildRequires:  xcb-util-xrm-devel
-BuildRequires:  xmlto
+BuildRequires:  perl(Pod::Simple)
 %ifnarch s390 s390x
 BuildRequires:  xorg-x11-drv-dummy
 %endif
-BuildRequires:  yajl-devel
 
 Requires:       qubes-desktop-linux-common
 Requires:       dmenu
 Requires:       dzen2
 Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
-# TODO: Unknown tag: Recommends
-#%{!?rhel:Recommends:     rxvt-unicode}
-#%{!?rhel:Recommends:     xorg-x11-apps}
+%{!?rhel:Recommends:     rxvt-unicode}
+%{!?rhel:Recommends:     xorg-x11-apps}
 Requires:       xorg-x11-fonts-misc
-Requires:	pulseaudio-utils
+Recommends:     pulseaudio-utils
+# for i3-save-tree
+Requires:       perl(AnyEvent::I3) >= 0.12
+
+Recommends:     dmenu
+Recommends:     i3status
+Recommends:     i3lock
 
 %description
 Key features of i3 are correct implementation of XrandR, horizontal and vertical
@@ -77,12 +91,27 @@ Please be aware that i3 is primarily targeted at advanced users and developers.
 
 %package        doc
 Summary:        Documentation for %{name}
-BuildRequires:  doxygen
 BuildArch:      noarch
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description    doc
-Asciidoc and doxygen generated documentations for %{name}.
+Asciidoc generated documentation for %{name}.
+
+%package        devel
+Summary:        Development files for %{name}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description    devel
+Header files for %{name}.
+
+%package        devel-doc
+Summary:        Documentation for the development files of %{name}
+BuildRequires:  doxygen
+BuildArch:      noarch
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description    devel-doc
+Doxygen generated documentations for %{name}.
 
 %prep
 %setup -q
@@ -93,14 +122,18 @@ find . -maxdepth 1 -type f -name "i3*" -exec sed -i -e '1s;^#!/usr/bin/env perl;
 
 
 %build
+mkdir build && pushd build
+ln -s ../configure configure
 %configure
-%make_build -C *-linux-gnu*
+%make_build
+popd
 
 doxygen pseudo-doc.doxygen
 mv pseudo-doc/html pseudo-doc/doxygen
 
 %install
-%make_install -C *-linux-gnu*
+pushd build
+%make_install
 
 mkdir -p %{buildroot}%{_mandir}/man1/
 install -Dpm0644 man/*.1 \
@@ -113,14 +146,14 @@ install -Dpm0644 %{SOURCE1} \
 %check
 %ifnarch s390 s390x
 # TODO: with xorg dummy to test the package.
-#cd testcases/ && ./complete-run.pl -p 1
+# TODO: get remaining dependencies in
+# make check
 %endif
 
 %files
 %doc RELEASE-NOTES-%{version}
 %license LICENSE
 %{_bindir}/%{name}*
-%{_includedir}/%{name}/
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/config
 %config(noreplace) %{_sysconfdir}/%{name}/config.keycodes
@@ -132,19 +165,50 @@ install -Dpm0644 %{SOURCE1} \
 %exclude %{_docdir}/%{name}/
 
 %files doc
-%doc docs/*.{html,png} pseudo-doc/doxygen/
+%license LICENSE
+%doc docs/*.{html,png}
+
+%files devel
+%license LICENSE
+%{_includedir}/%{name}/
+
+%files devel-doc
+%license LICENSE
+%doc pseudo-doc/doxygen/
 
 %changelog
-* Mon Sep 14 2019 anadahz <andz@torproject.org> - 4.17.1-1
-- Update to upstream release version 4.17.1
-- Add pulseaudio-utils requirement
-- Add Qubes patches: https://github.com/dmoerner/qubes-desktop-linux-i3/tree/4.17-qubes
+* Sun Nov 17 2019 Dan Čermák <dan.cermak@cgc-instruments.com> - 4.17.1-3
+- Weaken dependency on pulseaudio-utils to Recommends
 
-* Sun Jul 21 2019 Daniel Moerner <dmoerner@gmail.com> - 4.16.1-1
-- Update to upstream 4.16.1 and refresh Qubes patches.
+* Mon Nov 11 2019 Dan Čermák <dan.cermak@cgc-instruments.com> - 4.17.1-1
+- Create devel and devel-doc subpackages
+- Cleanup specfile
+- Remove dzen2 dependency, only recommend dmenu & i3status
 
-* Sat Nov 17 2018 anadahz <andz@torproject.org> - 4.16.1
-- new version for Qubes OS
+* Mon Sep 16 2019 anadahz <andz@torproject.org> - 4.17.1-1
+- New version
+- Add Missing R: pulseaudio-utils
+
+* Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 4.16.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
+* Fri May 31 2019 Jitka Plesnikova <jplesnik@redhat.com> - 4.16.1-2
+- Perl 5.30 rebuild
+
+* Sat Mar 30 2019 Christian Dersch <lupinix@fedoraproject.org> - 4.16.1-1
+- new version
+
+* Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 4.16-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Sat Nov 17 2018 anadahz <andz@torproject.org> - 4.16-1
+- new version
+
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 4.15-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Thu Jun 28 2018 Jitka Plesnikova <jplesnik@redhat.com> - 4.15-2
+- Perl 5.28 rebuild
 
 * Mon Mar 12 2018 Christian Dersch <lupinix@mailbox.org> - 4.15-1
 - new version
