@@ -80,12 +80,27 @@ Please be aware that i3 is primarily targeted at advanced users and developers.
 
 %package        doc
 Summary:        Documentation for %{name}
-BuildRequires:  doxygen
 BuildArch:      noarch
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description    doc
-Asciidoc and doxygen generated documentations for %{name}.
+Asciidoc generated documentation for %{name}.
+
+%package        devel
+Summary:        Development files for %{name}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description    devel
+Header files for %{name}.
+
+%package        devel-doc
+Summary:        Documentation for the development files of %{name}
+BuildRequires:  doxygen
+BuildArch:      noarch
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description    devel-doc
+Doxygen generated documentations for %{name}.
 
 %prep
 %setup -q
@@ -123,7 +138,6 @@ install -Dpm0644 %{SOURCE1} \
 %doc RELEASE-NOTES-%{version}
 %license LICENSE
 %{_bindir}/%{name}*
-%{_includedir}/%{name}/
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/config
 %config(noreplace) %{_sysconfdir}/%{name}/config.keycodes
@@ -135,7 +149,16 @@ install -Dpm0644 %{SOURCE1} \
 %exclude %{_docdir}/%{name}/
 
 %files doc
-%doc docs/*.{html,png} pseudo-doc/doxygen/
+%license LICENSE
+%doc docs/*.{html,png}
+
+%files devel
+%license LICENSE
+%{_includedir}/%{name}/
+
+%files devel-doc
+%license LICENSE
+%doc pseudo-doc/doxygen/
 
 %changelog
 
