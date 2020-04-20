@@ -13,7 +13,7 @@ BuildRequires:  gcc
 BuildRequires:  autoconf
 BuildRequires:  automake
 # from configure.ac and DEPENDS (mostly versions)
-BuildRequires:  pkg-config >= 0.25
+BuildRequires:  pkgconfig >= 0.25
 # no pkg-config for libev
 BuildRequires:  libev-devel >= 4.0
 BuildRequires:  pkgconfig(libstartup-notification-1.0)
