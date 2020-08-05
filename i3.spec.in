@@ -72,13 +72,15 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
 %{!?rhel:Recommends:     rxvt-unicode}
 %{!?rhel:Recommends:     xorg-x11-apps}
 Requires:       xorg-x11-fonts-misc
-Recommends:     pulseaudio-utils
 # for i3-save-tree
 Requires:       perl(AnyEvent::I3) >= 0.12
 
+%if 0%{?rhel} != 7
+Recommends:     pulseaudio-utils
 Recommends:     dmenu
 Recommends:     i3status
 Recommends:     i3lock
+%endif
 
 %description
 Key features of i3 are correct implementation of XrandR, horizontal and vertical
