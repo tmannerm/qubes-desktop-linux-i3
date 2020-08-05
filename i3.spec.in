@@ -66,9 +66,8 @@ BuildRequires:  perl(Pod::Simple)
 BuildRequires:  xorg-x11-drv-dummy
 %endif
 
-Requires:       qubes-desktop-linux-common
-Requires:       dmenu
-Requires:       dzen2
+Requires: qubes-desktop-linux-common
+
 Requires:       perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
 %{!?rhel:Recommends:     rxvt-unicode}
 %{!?rhel:Recommends:     xorg-x11-apps}
